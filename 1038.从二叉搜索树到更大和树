@@ -1,0 +1,33 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    private int sum = 0;
+    public TreeNode bstToGst(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        helper(root);
+        return root;
+    }
+    public void helper(TreeNode root) {
+        // 递归进入到二叉搜索树的右边节点
+        // 也是这个二叉搜索树的最大值节点
+        if (root.right != null) {
+            helper(root.right);
+        }
+        // 开始加值
+        // 并且赋值给 sum ，以便递归返回让上一个比他小的节点加值
+        root.val += sum;
+        sum = root.val;
+        if (root.left != null) {
+            helper(root.left);
+        }
+    }
+}
