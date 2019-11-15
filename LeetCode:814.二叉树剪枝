@@ -1,0 +1,24 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    // 后序遍历的思想
+    // 找到值为 0 的叶子节点，返回 null
+    public TreeNode pruneTree(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        root.left = pruneTree(root.left);
+        root.right = pruneTree(root.right);
+        if (root.left == null && root.right == null && root.val == 0) {
+            return null;
+        }
+        return root;
+    }
+}
