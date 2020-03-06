@@ -1,0 +1,42 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isSubtree(TreeNode s, TreeNode t) {
+        if (s == null && t == null) {
+            return true;
+        }
+        if (s == null || t == null) {
+            return false;
+        }
+        boolean tag = false;
+        if (s.val == t.val) {
+            tag = isSameTree(s, t);
+        }
+        if (!tag) {
+            tag = isSubtree(s.left, t);
+        } 
+        if (!tag) {
+            tag = isSubtree(s.right, t);
+        }
+        return tag;
+    }
+    public boolean isSameTree(TreeNode s, TreeNode t) {
+        if (s == null && t == null) {
+            return true;
+        }
+        if (s == null || t == null) {
+            return false;
+        }
+        if (s.val != t.val) {
+            return false;
+        }
+        return isSameTree(s.left, t.left) && isSameTree(s.right, t.right);
+    }
+}
