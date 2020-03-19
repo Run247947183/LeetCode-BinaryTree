@@ -1,0 +1,34 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    private TreeNode tag = null; // 最近公共祖先结点
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null) {
+            return null;
+        }
+        helper(root, p, q);
+        return tag;
+    }
+    public boolean helper(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null) {
+            return false;
+        }
+        // 因为要找最深的公共祖先结点，所有进行后序遍历
+        int left = helper(root.left, p, q) ? 1 : 0; // 判断左子树是否找到 p 或者 q
+        int right = helper(root.right, p, q) ? 1 : 0; 
+        int mid = (root.val == p.val || root.val == q.val) ? 1 : 0; // 判断当前结点是否等于 p 或者 q
+        if (left + right + mid >= 2) {
+            // 如果在当前结点下，找到了 p 和 q，那么说明该结点符合条件
+            tag = root;
+        }
+        // 递归的返回值，判断当前结点是否是 p 或者 q
+        return (mid + left + right) > 0;
+    }
+}
