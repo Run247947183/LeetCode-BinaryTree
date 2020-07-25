@@ -1,0 +1,27 @@
+# LeetCode-BinaryTree
+二叉树
+public class Solution {
+    public boolean VerifySquenceOfBST(int [] sequence) {
+        int len = sequence.length;
+        if (len == 0) {
+            return false;
+        }
+        return isBinaryTree(sequence, 0, len - 1);
+    }
+    public boolean isBinaryTree(int[] arr, int left, int right) {
+        if (left >= right) {
+            return true;
+        }
+        int root = arr[right];
+        int i = 0;
+        while (i < right && arr[i] < root) {
+            i++;
+        }
+        for (int j = i; j < right; j++) {
+            if (arr[j] <= root) {
+                return false;
+            }
+        }
+        return isBinaryTree(arr, 0, i - 1) && isBinaryTree(arr, i, right - 1);
+    }
+}
