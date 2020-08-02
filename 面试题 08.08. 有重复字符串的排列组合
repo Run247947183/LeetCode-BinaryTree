@@ -1,0 +1,35 @@
+# LeetCode-BinaryTree
+二叉树
+class Solution {
+    public String[] permutation(String S) {
+        dfs(S.toCharArray(), 0);
+        String[] str = new String[list.size()];
+        int index = 0;
+        for (String s : list) {
+            str[index++] = s;
+        }
+        return str;
+    }
+    public List<String> list = new ArrayList<>();
+    public HashSet<String> set = new HashSet<>();
+    public void dfs(char[] chars, int pos) {
+        if (pos == chars.length - 1) {
+            String tmp = new String(chars);
+            if (!set.contains(tmp)) {
+                list.add(tmp);
+                set.add(tmp);
+            }
+            return;
+        }
+        for (int i = pos; i < chars.length; i++) {
+            swap(chars, pos, i);
+            dfs(chars, pos + 1);
+            swap(chars, pos, i);
+        }
+    }
+    public void swap(char[] chars, int x, int y) {
+        char c = chars[x];
+        chars[x] = chars[y];
+        chars[y] = c;
+    }
+}
