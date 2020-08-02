@@ -1,0 +1,43 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    // 递归 + 数组
+    // 通过数组保存之前每一层的 root 值
+    // 到达新的一层，则开始往前遍历计算节点和，判断是否和 sum 相同
+    public int pathSum(TreeNode root, int sum) {
+        int depLen = depth(root);
+        int[] arr = new int[depLen];
+        helper(root, arr, 0, sum);
+        return res;
+    }
+    public int res = 0;
+    public void helper(TreeNode root, int[] arr, int level, int sum) {
+        if (root == null) {
+            return;
+        }
+        arr[level] = root.val;
+        int count = 0;
+        for (int i = level; i >= 0; i--) {
+            count += arr[i];
+            if (count == sum) {
+                res++;
+            }
+        } 
+        helper(root.left, arr, level + 1, sum);
+        helper(root.right, arr, level + 1, sum);
+    }
+    // 计算二叉树的最大深度
+    public int depth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return 1 + Math.max(depth(root.left), depth(root.right));
+    }
+}
