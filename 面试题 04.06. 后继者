@@ -1,0 +1,34 @@
+# LeetCode-BinaryTree
+二叉树
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode res = null;
+    public boolean tag = false;
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        inorder(root, p);
+        return res;
+    }
+    public void inorder(TreeNode root, TreeNode p) {
+        if (root == null) {
+            return;
+        }
+        inorder(root.left, p);
+        if (tag) {
+            res = root;
+            tag = false;
+            return;
+        }
+        if (root == p) {
+            tag = true;
+        }
+        inorder(root.right, p);
+    }
+}
