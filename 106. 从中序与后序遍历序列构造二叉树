@@ -1,0 +1,62 @@
+# LeetCode-BinaryTree
+二叉树
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        if (inorder.length == 0 || postorder.length == 0) {
+            return null;
+        }
+        int len = postorder.length;
+        TreeNode root = new TreeNode(postorder[len - 1]);
+        int i = 0;
+        for (; i < inorder.length; i++) {
+            if (inorder[i] == postorder[len - 1]) {
+                break;
+            }
+        }
+        root.right = buildTree(Arrays.copyOfRange(inorder, i + 1, inorder.length),
+        Arrays.copyOfRange(postorder, i, len - 1));
+        root.left = buildTree(Arrays.copyOfRange(inorder, 0, i),
+        Arrays.copyOfRange(postorder, 0, i));
+        return root;
+    }
+}
+
+以上方法效率低下，时间消耗高，通过 HashMaop 进行改进如下
+class Solution {
+    public Map<Integer, Integer> map = new HashMap<>();
+    public int index = 0;
+    public int[] postorder = null;
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        if (inorder.length == 0 || postorder.length == 0) {
+            return null;
+        }
+        index = postorder.length - 1;
+        this.postorder = postorder;
+        int pos = 0;
+        for (int num : inorder) {
+            map.put(num, pos++);
+        }
+        return helper(0, postorder.length - 1);   
+    }
+    public TreeNode helper(int left, int right) {
+        if (left > right) {
+            return null;
+        }
+        int rootVal = postorder[index];
+        TreeNode root = new TreeNode(rootVal);
+        index--;
+        int pos = map.get(rootVal);
+        root.right = helper(pos + 1, right);
+        root.left = helper(left, pos - 1);
+        return root;
+    }
+}
