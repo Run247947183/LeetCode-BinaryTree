@@ -1,0 +1,67 @@
+# LeetCode-BinaryTree
+二叉树
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    // 二叉搜索中序遍历后的结果是有序的
+    // 所以根据中序遍历的结果去找到错误交换的两个节点
+    // 然后在二叉搜索树中找到位置，交换即可
+    public void recoverTree(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        List<Integer> list = new ArrayList<>();
+        inorder(root, list);
+        int[] arr = helper(list);
+        reverse(root, 2, arr[0], arr[1]);
+    }
+    public void inorder(TreeNode root, List<Integer> list) {
+        if (root == null) {
+            return;
+        }
+        inorder(root.left, list);
+        list.add(root.val);
+        inorder(root.right, list);
+    }
+    public int[] helper(List<Integer> list) {
+        int x = -1;
+        int y = -1;
+        for (int i = 1; i < list.size(); i++) {
+            if (list.get(i) < list.get(i - 1)) {
+                x = list.get(i);
+                if (y == -1) {
+                    y = list.get(i - 1);
+                } else {
+                    break;
+                }
+            }
+        }
+        return new int[]{x, y};
+    } 
+    public void reverse(TreeNode root, int count, int x, int y) {
+        if (root != null) {
+            if (root.val == x || root.val == y) {
+                root.val = root.val == x ? y : x;
+                count--;
+                if (count == 0) {
+                    return;
+                }
+            }
+            reverse(root.left, count, x, y);
+            reverse(root.right, count, x, y);
+        }
+    }
+}
