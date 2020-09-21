@@ -1,0 +1,64 @@
+# LeetCode-BinaryTree
+二叉树
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> list = new ArrayList<>();
+    public TreeNode convertBST(TreeNode root) {
+        inorder(root);
+        int sum = 0;
+        for (Integer num : list) {
+            sum += num;
+        }
+        int count = 0;
+        for (int i = 0; i < list.size(); i++) {
+            int tmp = list.get(i);
+            list.set(i, sum - count);
+            count += tmp;
+        }
+        change(root);
+        return root;
+    }
+    public int index = 0;
+    public void change(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        change(root.left);
+        root.val = list.get(index);
+        index++;
+        change(root.right);
+    }
+    public void inorder(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        inorder(root.left);
+        list.add(root.val);
+        inorder(root.right);
+    }
+}
+
+
+反序中序遍历
+
+class Solution {
+    int num = 0;
+    public TreeNode convertBST(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        convertBST(root.right);
+        root.val = root.val + num;
+        num = root.val;
+        convertBST(root.left);
+        return root;
+    }
+}
